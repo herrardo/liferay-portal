@@ -1,3 +1,11 @@
-modules/apps/frontend-data-set/*    @liferay-frontend
-modules/apps/frontend-editor/*    @liferay-frontend
-modules/apps/frontend-taglib/*    @liferay-frontend
+modules/apps/cookies/cookies-banner-web    @liferay/frontend-infrastructure-core-developers
+modules/apps/frontend-data-set/*    @liferay/frontend-infrastructure-core-developers
+modules/apps/frontend-editor/*    @liferay/frontend-infrastructure-core-developers
+modules/apps/frontend-js/*    @liferay/frontend-infrastructure-core-developers
+modules/apps/frontend-taglib/frontend-taglib/*    @liferay/frontend-infrastructure-core-developers
+modules/apps/frontend-taglib/frontend-taglib-aui-form-extension-sample/*    @liferay/frontend-infrastructure-core-developers
+modules/apps/frontend-taglib/frontend-taglib-clay/*    @liferay/frontend-infrastructure-core-developers
+modules/apps/frontend-taglib/frontend-taglib-clay-sample-web/*    @liferay/frontend-infrastructure-core-developers
+modules/apps/frontend-taglib/frontend-taglib-clay-test-alert-toast-sample-web/*    @liferay/frontend-infrastructure-core-developers
+modules/apps/frontend-taglib/frontend-taglib-react/*    @liferay/frontend-infrastructure-core-developers
+modules/apps/frontend-taglib/frontend-taglib-util/*    @liferay/frontend-infrastructure-core-developers
