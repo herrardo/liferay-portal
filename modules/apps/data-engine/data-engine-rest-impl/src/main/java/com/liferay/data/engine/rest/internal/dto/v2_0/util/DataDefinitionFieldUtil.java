@@ -98,7 +98,7 @@ public class DataDefinitionFieldUtil {
 		EditorConfiguration editorConfiguration =
 			EditorConfigurationFactoryUtil.getEditorConfiguration(
 				StringPool.BLANK, ddmFormFieldType,
-				FeatureFlagManagerUtil.isEnabled("LPD-11235") ?
+				!FeatureFlagManagerUtil.isEnabled("LPD-11235") ?
 					"ckeditor5_classic" : "ckeditor_classic",
 				new HashMap<>(), themeDisplay,
 				RequestBackedPortletURLFactoryUtil.create(httpServletRequest));

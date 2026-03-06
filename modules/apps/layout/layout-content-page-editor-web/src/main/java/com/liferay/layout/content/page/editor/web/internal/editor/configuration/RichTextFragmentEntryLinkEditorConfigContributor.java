@@ -71,7 +71,7 @@ public class RichTextFragmentEntryLinkEditorConfigContributor
 			"filebrowserImageBrowseUrl", imageSelectorURL.toString()
 		);
 
-		if (FeatureFlagManagerUtil.isEnabled("LPD-11235")) {
+		if (!FeatureFlagManagerUtil.isEnabled("LPD-11235")) {
 			jsonObject.put(
 				"blockToolbar",
 				JSONUtil.put(

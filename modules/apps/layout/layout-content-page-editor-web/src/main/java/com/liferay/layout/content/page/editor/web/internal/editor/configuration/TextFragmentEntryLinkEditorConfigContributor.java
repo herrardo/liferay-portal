@@ -51,7 +51,7 @@ public class TextFragmentEntryLinkEditorConfigContributor
 			jsonObject, inputEditorTaglibAttributes, themeDisplay,
 			requestBackedPortletURLFactory);
 
-		if (FeatureFlagManagerUtil.isEnabled("LPD-11235")) {
+		if (!FeatureFlagManagerUtil.isEnabled("LPD-11235")) {
 			jsonObject.put(
 				"preset", "basic"
 			).put(

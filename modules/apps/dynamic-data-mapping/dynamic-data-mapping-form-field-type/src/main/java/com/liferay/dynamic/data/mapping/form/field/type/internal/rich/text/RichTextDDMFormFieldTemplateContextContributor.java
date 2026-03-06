@@ -104,7 +104,7 @@ public class RichTextDDMFormFieldTemplateContextContributor
 		EditorConfiguration editorConfiguration =
 			EditorConfigurationFactoryUtil.getEditorConfiguration(
 				themeDisplay.getPpid(), ddmFormFieldType,
-				FeatureFlagManagerUtil.isEnabled("LPD-11235") ?
+				!FeatureFlagManagerUtil.isEnabled("LPD-11235") ?
 					"ckeditor5_classic" : "ckeditor_classic",
 				HashMapBuilder.<String, Object>put(
 					"liferay-ui:input-editor:allowBrowseDocuments", true
