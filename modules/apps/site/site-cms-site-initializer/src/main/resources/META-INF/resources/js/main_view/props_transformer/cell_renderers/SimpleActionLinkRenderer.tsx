@@ -8,6 +8,7 @@ import ClayLink from '@clayui/link';
 import ClaySticker from '@clayui/sticker';
 import {findAction, replaceTokens} from '@liferay/frontend-data-set-web';
 import classNames from 'classnames';
+import {addSearchHistoryItem} from 'frontend-js-web';
 import React from 'react';
 
 import {OBJECT_ENTRY_FOLDER_CLASS_NAME} from '../../../common/utils/constants';
@@ -47,7 +48,7 @@ export default function SimpleActionLinkRenderer({
 
 	const hasUpdatePermission = Boolean(itemData?.actions?.update);
 
-	let formattedHref = null;
+	let formattedHref: string | null = null;
 	let shouldOpenModal = false;
 
 	if (actions.length && actionId) {
@@ -140,7 +141,12 @@ export default function SimpleActionLinkRenderer({
 		<div className="align-items-center d-flex table-list-title">
 			{stickerElement}
 
-			<ClayLink aria-label={title} data-senna-off href={formattedHref}>
+			<ClayLink
+				aria-label={title}
+				data-senna-off
+				href={formattedHref}
+				onClick={() => addSearchHistoryItem(formattedHref!, title)}
+			>
 				{title}
 
 				{systemIcon}
