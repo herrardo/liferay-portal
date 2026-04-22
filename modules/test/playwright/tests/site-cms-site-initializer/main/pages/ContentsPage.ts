@@ -44,6 +44,16 @@ export class ContentsPage {
 	readonly newButton: Locator;
 	readonly publishButton: Locator;
 	readonly apiHelpers: ApiHelpers;
+	readonly searchHistoryDropdown: {
+		clearAllButton: Locator;
+		container: Locator;
+		queryItems: Locator;
+		recentSearchesHeader: Locator;
+		recentlyVisitedHeader: Locator;
+		searchInput: Locator;
+		visitedItems: Locator;
+	};
+
 	constructor(page: Page) {
 		this.page = page;
 
@@ -54,6 +64,30 @@ export class ContentsPage {
 		this.publishButton = page
 			.getByText('Publish', {exact: true})
 			.or(page.getByText('Submit for Workflow', {exact: true}));
+
+		const searchHistoryDropdownContainer = page.locator(
+			'[data-canonical-name="Search History Dropdown"]'
+		);
+
+		this.searchHistoryDropdown = {
+			clearAllButton: searchHistoryDropdownContainer.locator(
+				'[data-canonical-name="Clear All"]'
+			),
+			container: searchHistoryDropdownContainer,
+			queryItems: searchHistoryDropdownContainer.locator(
+				'[data-canonical-name="Recent Searches"] ~ ul [data-canonical-name]'
+			),
+			recentSearchesHeader: searchHistoryDropdownContainer.locator(
+				'[data-canonical-name="Recent Searches"]'
+			),
+			recentlyVisitedHeader: searchHistoryDropdownContainer.locator(
+				'[data-canonical-name="Recently Visited"]'
+			),
+			searchInput: page.getByPlaceholder('Search'),
+			visitedItems: searchHistoryDropdownContainer.locator(
+				'[data-canonical-name="Recently Visited"] ~ ul [data-canonical-name]'
+			),
+		};
 	}
 
 	async goto() {
@@ -336,6 +370,13 @@ export class ContentsPage {
 		await expect(
 			this.page.getByRole('dialog', {name: title})
 		).toBeVisible();
+	}
+
+	async clickContentLink(title: string) {
+		await this.page
+			.locator('tr', {hasText: title})
+			.locator('.table-list-title a')
+			.click();
 	}
 
 	async viewShowDetails(title: string) {
