@@ -5,6 +5,7 @@
 
 import ClayLink from '@clayui/link';
 import classNames from 'classnames';
+import {addSearchHistoryItem} from 'frontend-js-web';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -30,6 +31,11 @@ function LinkRenderer({options, value}: ILinkRendererProps) {
 				decoration={options?.decoration}
 				displayType={options?.displayType}
 				href={value?.href}
+				onClick={() => {
+					if (value?.href && value?.label) {
+						addSearchHistoryItem(value.href, value.label);
+					}
+				}}
 			>
 				<DefaultContent value={value?.label} />
 			</ClayLink>

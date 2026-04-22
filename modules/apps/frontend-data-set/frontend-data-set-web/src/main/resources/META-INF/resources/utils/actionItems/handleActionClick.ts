@@ -4,7 +4,7 @@
  */
 
 import {openConfirmModal} from 'frontend-js-components-web';
-import {navigate} from 'frontend-js-web';
+import {addSearchHistoryItem, navigate} from 'frontend-js-web';
 
 import {openPermissionsModal} from '../modals/openPermissionsModal';
 import {openWorkflowTransitionModal} from '../modals/openWorkflowTransitionModal';
@@ -132,6 +132,8 @@ const handleActionClick = ({
 		else if (target === 'blank') {
 			event.preventDefault();
 
+			addSearchHistoryItem(url, itemData?.name ?? itemData?.title ?? url);
+
 			window.open(url);
 		}
 
@@ -152,8 +154,12 @@ const handleActionClick = ({
 			onActionDropdownItemClick(exposedProps);
 		}
 
-		if (target === 'link' && defaultPrevented) {
-			navigate(url);
+		if (target === 'link') {
+			addSearchHistoryItem(url, itemData?.name ?? itemData?.title ?? url);
+
+			if (defaultPrevented) {
+				navigate(url);
+			}
 		}
 	};
 

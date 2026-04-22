@@ -7,7 +7,7 @@ import ClayIcon from '@clayui/icon';
 import ClayLink from '@clayui/link';
 import classNames from 'classnames';
 import {openConfirmModal} from 'frontend-js-components-web';
-import {navigate} from 'frontend-js-web';
+import {addSearchHistoryItem, navigate} from 'frontend-js-web';
 import React, {useContext} from 'react';
 
 import FrontendDataSetContext from '../FrontendDataSetContext';
@@ -184,12 +184,28 @@ function ActionLinkRenderer({
 										message: confirmMessage,
 										onConfirm: (isConfirmed) => {
 											if (formattedHref && isConfirmed) {
+												addSearchHistoryItem(
+													formattedHref,
+													itemData?.name ??
+														itemData?.title ??
+														formattedHref
+												);
+
 												navigate(formattedHref);
 											}
 										},
 									});
 								}
 								else {
+									if (formattedHref) {
+										addSearchHistoryItem(
+											formattedHref,
+											itemData?.name ??
+												itemData?.title ??
+												formattedHref
+										);
+									}
+
 									event.stopPropagation();
 								}
 							}
