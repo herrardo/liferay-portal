@@ -51,6 +51,14 @@ export class FDSSamplePage {
 		container: Locator;
 		filterButton: Locator;
 		searchButton: Locator;
+		searchHistoryDropdown: {
+			clearAllButton: Locator;
+			container: Locator;
+			queryItems: Locator;
+			recentSearchesHeader: Locator;
+			recentlyVisitedHeader: Locator;
+			visitedItems: Locator;
+		};
 		searchInput: Locator;
 	};
 	readonly page: Page;
@@ -155,6 +163,11 @@ export class FDSSamplePage {
 		const managementToolbarContainer =
 			page.getByTestId('managementToolbar');
 
+		const searchHistoryDropdownContainer =
+			managementToolbarContainer.locator(
+				'[data-canonical-name="Search History Dropdown"]'
+			);
+
 		this.managementToolbar = {
 			container: managementToolbarContainer,
 			filterButton: managementToolbarContainer.getByRole('button', {
@@ -163,6 +176,24 @@ export class FDSSamplePage {
 			searchButton: managementToolbarContainer.getByRole('button', {
 				name: 'Search',
 			}),
+			searchHistoryDropdown: {
+				clearAllButton: searchHistoryDropdownContainer.locator(
+					'[data-canonical-name="Clear All"]'
+				),
+				container: searchHistoryDropdownContainer,
+				queryItems: searchHistoryDropdownContainer.locator(
+					'[data-canonical-name="Recent Searches"] ~ ul [data-canonical-name]'
+				),
+				recentSearchesHeader: searchHistoryDropdownContainer.locator(
+					'[data-canonical-name="Recent Searches"]'
+				),
+				recentlyVisitedHeader: searchHistoryDropdownContainer.locator(
+					'[data-canonical-name="Recently Visited"]'
+				),
+				visitedItems: searchHistoryDropdownContainer.locator(
+					'[data-canonical-name="Recently Visited"] ~ ul [data-canonical-name]'
+				),
+			},
 			searchInput: managementToolbarContainer.locator(
 				'input[type="search"]'
 			),
