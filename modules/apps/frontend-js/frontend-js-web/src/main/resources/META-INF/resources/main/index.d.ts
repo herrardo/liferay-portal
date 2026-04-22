@@ -879,4 +879,17 @@ export {default as dateUtils} from './utils/date_time';
 export {default as mimeTypeUtils} from './utils/mime_type';
 export {getObjectValueFromPath} from './utils/object/getObjectValueFromPath';
 export {default as pkceChallenge} from './utils/pkceChallenge';
+export {
+	SearchHistoryItem,
+	SearchHistoryQuery,
+	addItem as addSearchHistoryItem,
+	addQuery as addSearchHistoryQuery,
+	clear as clearSearchHistory,
+	clearItems as clearSearchHistoryItems,
+	clearQueries as clearSearchHistoryQueries,
+	getItems as getSearchHistoryItems,
+	getQueries as getSearchHistoryQueries,
+	removeItem as removeSearchHistoryItem,
+	removeQuery as removeSearchHistoryQuery,
+} from './utils/searchHistory';
 export {getFileAsBase64} from './utils/string/getFileAsBase64';
