@@ -132,7 +132,12 @@ const handleActionClick = ({
 		else if (target === 'blank') {
 			event.preventDefault();
 
-			addSearchHistoryItem(url, itemData?.name ?? itemData?.title ?? url);
+			if (Liferay.FeatureFlags['LPD-80601']) {
+				addSearchHistoryItem(
+					url,
+					itemData?.name ?? itemData?.title ?? url
+				);
+			}
 
 			window.open(url);
 		}
@@ -155,7 +160,12 @@ const handleActionClick = ({
 		}
 
 		if (target === 'link') {
-			addSearchHistoryItem(url, itemData?.name ?? itemData?.title ?? url);
+			if (Liferay.FeatureFlags['LPD-80601']) {
+				addSearchHistoryItem(
+					url,
+					itemData?.name ?? itemData?.title ?? url
+				);
+			}
 
 			if (defaultPrevented) {
 				navigate(url);

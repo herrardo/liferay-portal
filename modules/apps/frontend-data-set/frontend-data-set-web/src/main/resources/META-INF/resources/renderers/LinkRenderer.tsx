@@ -32,7 +32,11 @@ function LinkRenderer({options, value}: ILinkRendererProps) {
 				displayType={options?.displayType}
 				href={value?.href}
 				onClick={() => {
-					if (value?.href && value?.label) {
+					if (
+						Liferay.FeatureFlags['LPD-80601'] &&
+						value?.href &&
+						value?.label
+					) {
 						addSearchHistoryItem(value.href, value.label);
 					}
 				}}

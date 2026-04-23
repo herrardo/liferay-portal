@@ -145,7 +145,11 @@ export default function SimpleActionLinkRenderer({
 				aria-label={title}
 				data-senna-off
 				href={formattedHref}
-				onClick={() => addSearchHistoryItem(formattedHref!, title)}
+				onClick={() => {
+					if (Liferay.FeatureFlags['LPD-80601']) {
+						addSearchHistoryItem(formattedHref!, title);
+					}
+				}}
 			>
 				{title}
 
