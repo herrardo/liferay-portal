@@ -6,13 +6,14 @@
 import {ClayButtonWithIcon} from '@clayui/button';
 import ClayDropDown from '@clayui/drop-down';
 import ClayIcon from '@clayui/icon';
-import {SearchHistoryItem, SearchHistoryQuery, navigate} from 'frontend-js-web';
+import {SearchHistoryItem, SearchHistoryQuery} from 'frontend-js-web';
 import React from 'react';
 
 interface Props {
 	inputValue: string;
 	items: SearchHistoryItem[];
 	onItemRemove: (url: string) => void;
+	onItemSelect: (item: SearchHistoryItem) => void;
 	onItemsClear: () => void;
 	onQueryRemove: (text: string) => void;
 	onQuerySelect: (query: string) => void;
@@ -20,21 +21,26 @@ interface Props {
 }
 
 function HighlightMatch({highlight, text}: {highlight: string; text: string}) {
-	if (!highlight) {
+	if (!highlight.trim()) {
 		return <>{text}</>;
 	}
 
-	const index = text.toLowerCase().indexOf(highlight.toLowerCase());
+	const escapedHighlight = highlight.replace(
+		/[-[\]{}()*+?.,\\^$|#\s]/g,
+		'\\$&'
+	);
 
-	if (index === -1) {
-		return <>{text}</>;
-	}
+	const parts = text.split(new RegExp(`(${escapedHighlight})`, 'gi'));
 
 	return (
 		<>
-			{text.slice(0, index)}
-			<strong>{text.slice(index, index + highlight.length)}</strong>
-			{text.slice(index + highlight.length)}
+			{parts.map((part, index) =>
+				part.toLowerCase() === highlight.toLowerCase() ? (
+					<strong key={index}>{part}</strong>
+				) : (
+					part
+				)
+			)}
 		</>
 	);
 }
@@ -60,13 +66,14 @@ function SearchHistoryDropdown({
 	inputValue,
 	items,
 	onItemRemove,
+	onItemSelect,
 	onItemsClear,
 	onQueryRemove,
 	onQuerySelect,
 	queries,
 }: Props) {
 	return (
-		<div
+		<ul
 			className="dropdown-menu dropdown-menu-width-sm show w-100"
 			data-canonical-name={Liferay.Language.get(
 				'search-history-dropdown'
@@ -83,32 +90,30 @@ function SearchHistoryDropdown({
 						{Liferay.Language.get('recently-visited')}
 					</li>
 
-					<ClayDropDown.ItemList>
-						{items.map((item) => (
-							<ClayDropDown.Item
-								data-canonical-name={item.title}
-								key={item.url}
-								onClick={() => navigate(item.url)}
-							>
-								<span className="align-items-center d-flex w-100">
-									<span className="mr-2">
-										<ClayIcon symbol="link" />
-									</span>
+					{items.map((item) => (
+						<ClayDropDown.Item
+							data-canonical-name={item.title}
+							key={item.url}
+							onClick={() => onItemSelect(item)}
+						>
+							<span className="align-items-center d-flex w-100">
+								<span className="mr-2">
+									<ClayIcon symbol="link" />
+								</span>
 
-									<span className="flex-grow-1">
-										<HighlightMatch
-											highlight={inputValue}
-											text={item.title}
-										/>
-									</span>
-
-									<RemoveButton
-										onRemove={() => onItemRemove(item.url)}
+								<span className="flex-grow-1">
+									<HighlightMatch
+										highlight={inputValue}
+										text={item.title}
 									/>
 								</span>
-							</ClayDropDown.Item>
-						))}
-					</ClayDropDown.ItemList>
+
+								<RemoveButton
+									onRemove={() => onItemRemove(item.url)}
+								/>
+							</span>
+						</ClayDropDown.Item>
+					))}
 				</>
 			)}
 
@@ -125,34 +130,30 @@ function SearchHistoryDropdown({
 						{Liferay.Language.get('recent-searches')}
 					</li>
 
-					<ClayDropDown.ItemList>
-						{queries.map((query) => (
-							<ClayDropDown.Item
-								data-canonical-name={query.text}
-								key={query.text}
-								onClick={() => onQuerySelect(query.text)}
-							>
-								<span className="align-items-center d-flex w-100">
-									<span className="mr-2">
-										<ClayIcon symbol="time" />
-									</span>
+					{queries.map((query) => (
+						<ClayDropDown.Item
+							data-canonical-name={query.text}
+							key={query.text}
+							onClick={() => onQuerySelect(query.text)}
+						>
+							<span className="align-items-center d-flex w-100">
+								<span className="mr-2">
+									<ClayIcon symbol="time" />
+								</span>
 
-									<span className="flex-grow-1">
-										<HighlightMatch
-											highlight={inputValue}
-											text={query.text}
-										/>
-									</span>
-
-									<RemoveButton
-										onRemove={() =>
-											onQueryRemove(query.text)
-										}
+								<span className="flex-grow-1">
+									<HighlightMatch
+										highlight={inputValue}
+										text={query.text}
 									/>
 								</span>
-							</ClayDropDown.Item>
-						))}
-					</ClayDropDown.ItemList>
+
+								<RemoveButton
+									onRemove={() => onQueryRemove(query.text)}
+								/>
+							</span>
+						</ClayDropDown.Item>
+					))}
 				</>
 			)}
 
@@ -168,7 +169,7 @@ function SearchHistoryDropdown({
 					</ClayDropDown.Item>
 				</>
 			)}
-		</div>
+		</ul>
 	);
 }
 

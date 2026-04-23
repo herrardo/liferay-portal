@@ -6,11 +6,14 @@
 import {ClayButtonWithIcon} from '@clayui/button';
 import {ClayInput} from '@clayui/form';
 import {
+	SearchHistoryItem,
+	addSearchHistoryItem,
 	addSearchHistoryQuery,
 	clearSearchHistoryItems,
 	clearSearchHistoryQueries,
 	getSearchHistoryItems,
 	getSearchHistoryQueries,
+	navigate,
 	removeSearchHistoryItem,
 	removeSearchHistoryQuery,
 } from 'frontend-js-web';
@@ -48,8 +51,12 @@ function MainSearch({onClear}: {onClear: () => void}) {
 		return () => document.removeEventListener('mousedown', handleMouseDown);
 	}, []);
 
-	const allQueries = getSearchHistoryQueries();
-	const allItems = getSearchHistoryItems();
+	const searchHistoryEnabled = Liferay.FeatureFlags['LPD-80601'];
+
+	const allQueries =
+		searchHistoryEnabled && dropdownActive ? getSearchHistoryQueries() : [];
+	const allItems =
+		searchHistoryEnabled && dropdownActive ? getSearchHistoryItems() : [];
 
 	const filteredQueries = inputValue
 		? allQueries.filter((q) =>
@@ -64,6 +71,15 @@ function MainSearch({onClear}: {onClear: () => void}) {
 		: allItems;
 
 	const hasHistory = !!filteredQueries.length || !!filteredItems.length;
+
+	function handleItemSelect(item: SearchHistoryItem) {
+		if (searchHistoryEnabled) {
+			addSearchHistoryItem(item.url, item.title);
+		}
+
+		setDropdownActive(false);
+		navigate(item.url);
+	}
 
 	function handleQuerySelect(query: string) {
 		setInputValue(query);
@@ -113,7 +129,9 @@ function MainSearch({onClear}: {onClear: () => void}) {
 						if (event.key === 'Enter' && (apiURL || appURL)) {
 							event.preventDefault();
 
-							addSearchHistoryQuery(inputValue);
+							if (searchHistoryEnabled) {
+								addSearchHistoryQuery(inputValue);
+							}
 
 							onSearch({query: inputValue});
 
@@ -136,7 +154,9 @@ function MainSearch({onClear}: {onClear: () => void}) {
 						onClick={(event) => {
 							event.preventDefault();
 
-							addSearchHistoryQuery(inputValue);
+							if (searchHistoryEnabled) {
+								addSearchHistoryQuery(inputValue);
+							}
 
 							onSearch({query: inputValue});
 
@@ -153,6 +173,7 @@ function MainSearch({onClear}: {onClear: () => void}) {
 					inputValue={inputValue}
 					items={filteredItems}
 					onItemRemove={handleItemRemove}
+					onItemSelect={handleItemSelect}
 					onItemsClear={handleItemsClear}
 					onQueryRemove={handleQueryRemove}
 					onQuerySelect={handleQuerySelect}
