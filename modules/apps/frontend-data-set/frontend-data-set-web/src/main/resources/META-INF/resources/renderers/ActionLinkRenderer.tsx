@@ -184,12 +184,14 @@ function ActionLinkRenderer({
 										message: confirmMessage,
 										onConfirm: (isConfirmed) => {
 											if (formattedHref && isConfirmed) {
-												addSearchHistoryItem(
-													formattedHref,
-													itemData?.name ??
-														itemData?.title ??
-														formattedHref
-												);
+												if (Liferay.FeatureFlags['LPD-80601']) {
+													addSearchHistoryItem(
+														formattedHref,
+														itemData?.name ??
+															itemData?.title ??
+															formattedHref
+													);
+												}
 
 												navigate(formattedHref);
 											}
@@ -197,7 +199,10 @@ function ActionLinkRenderer({
 									});
 								}
 								else {
-									if (formattedHref) {
+									if (
+										formattedHref &&
+										Liferay.FeatureFlags['LPD-80601']
+									) {
 										addSearchHistoryItem(
 											formattedHref,
 											itemData?.name ??
