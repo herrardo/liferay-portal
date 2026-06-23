@@ -49,6 +49,7 @@ import {WritingAssistant} from '@liferay/ai-hub-cell-js-components-web';
 import {sub} from 'frontend-js-web';
 
 import AICreator from '../plugins/AICreator';
+import DocumentLinkSelector from '../plugins/DocumentLinkSelector';
 import HeadlessItemSelector from '../plugins/HeadlessItemSelector';
 import ItemSelector from '../plugins/ItemSelector';
 import {EEditorConfigPreset, EEditorVariant} from './types';
@@ -129,6 +130,7 @@ const getDefaultEditorConfig = ({
 		AICreator,
 		Alignment,
 		BlockQuote,
+		DocumentLinkSelector,
 		Font,
 		Heading,
 		HeadlessItemSelector,
